@@ -3,6 +3,9 @@ from flask import *
 
 import sklearn
 from sklearn import linear_model
+from sklearn import preprocessing
+from sklearn.neighbors import KNeighborsClassifier
+import joblib
 import pandas as pd
 import numpy as np
 from sklearn.utils import shuffle
@@ -17,11 +20,11 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route("/")
-def hello():
-    return render_template('index.html')
+def index():
+    return render_template('base.html')
 
-@app.route('/success', methods = ['GET','POST'])  
-def success():  
+@app.route('/linear', methods = ['GET','POST'])  
+def linear():  
     if request.method == 'POST':  
         f = request.files['file']  
         f.save(f.filename) 
@@ -57,7 +60,47 @@ def success():
     pyplot.ylabel("Atomic mass")
     pyplot.savefig("static/img/linearimg.png")
 
-    return render_template("success.html", name = f.filename)  
+    return render_template("linear.html", name = f.filename)  
+
+@app.route('/knn', methods = ['GET','POST'])  
+def knn():  
+        if request.method == 'POST':  
+            f = request.files['file']  
+            f.save(f.filename) 
+
+        data = pd.read_csv("train.csv", sep=",")
+
+        mass = data["mean_atomic_mass"]
+
+        le = preprocessing.LabelEncoder()
+        cls = le.fit_transform(list(data["critical_temp"]))
+
+        predict = "critical_temp"
+
+        x = np.array(data.drop([predict], 1))
+        y = np.array(data[predict])
+
+        y = list(cls)
+
+        x_train, x_test, y_train, y_test = sklearn.model_selection.train_test_split(x, y, test_size=0.5)
+
+        model = KNeighborsClassifier(n_neighbors=1)
+
+        model.fit(x_train, y_train)
+        score = model.score(x_test, y_test)
+
+        print(score)
+        print('Coeficiente: \n', model.n_neighbors)
+
+        p = "critical_temp"
+
+        style.use("ggplot")
+        pyplot.scatter(data[p], data["mean_atomic_mass"])
+        pyplot.xlabel("Critical temperature")
+        pyplot.ylabel("Atomic mass")
+        pyplot.savefig("static/img/knnimg.png")
+
+        return render_template("knn.html", name = f.filename)  
 
 if __name__ =='__main__':
     app.run(debug=True)
