@@ -30,10 +30,8 @@ def linear():
         f.save(f.filename) 
     
     
-
+    
     data = pd.read_csv("train.csv", sep=",")
-
-    mass = data["mean_atomic_mass"]
 
     predict = "critical_temp"
 
@@ -48,19 +46,33 @@ def linear():
 
     linear.fit(x_train, y_train)
     score = linear.score(x_test, y_test)
+    tabela = data['number_of_elements']
+    count = tabela.count()
 
-    print('Score', score)
-    print('Coeficiente: \n', linear.coef_)
 
-    p = "critical_temp"
+    #print('Score', score)
+    #print('Coeficiente: \n', linear.coef_)
 
-    style.use("ggplot")
-    pyplot.scatter(data[p], data["mean_atomic_mass"])
-    pyplot.xlabel("Critical temperature")
-    pyplot.ylabel("Atomic mass")
+    temp = data['critical_temp']
+    atomicMass = data['mean_atomic_mass']
+    condutividade = data['mean_ThermalConductivity']
+    eletric = data['mean_ElectronAffinity']
+    valence = data['mean_Valence']
+    raio = data['mean_atomic_radius']
+
+    pyplot.plot(temp.sort_values(), atomicMass.sort_values(), color='green', label='Massa atômica')
+    pyplot.plot(temp.sort_values(), condutividade.sort_values(), color='orange', label= 'condutividade')
+    pyplot.plot(temp.sort_values(), eletric.sort_values(), color='blue', label= 'afinidade eletrônica')
+    pyplot.plot(temp.sort_values(), raio.sort_values(), color='black', label= 'Raio atômico')
+    pyplot.plot(temp.sort_values(), temp.sort_values(), color='red', label= 'Temperatura')
+
+    pyplot.xlabel('Temperatura')
+    #plt.ylabel('Massa atômica')
+    pyplot.title('Relação temperatura critica')
+    pyplot.legend(loc="upper left")
     pyplot.savefig("static/img/linearimg.png")
 
-    return render_template("linear.html", name = f.filename)  
+    return render_template("linear.html", name = f.filename, score= score, count=count)  
 
 @app.route('/knn', methods = ['GET','POST'])  
 def knn():  
@@ -69,8 +81,6 @@ def knn():
             f.save(f.filename) 
 
         data = pd.read_csv("train.csv", sep=",")
-
-        mass = data["mean_atomic_mass"]
 
         le = preprocessing.LabelEncoder()
         cls = le.fit_transform(list(data["critical_temp"]))
@@ -88,19 +98,30 @@ def knn():
 
         model.fit(x_train, y_train)
         score = model.score(x_test, y_test)
-
         print(score)
         print('Coeficiente: \n', model.n_neighbors)
 
-        p = "critical_temp"
+        tabela = data['number_of_elements']
+        count = tabela.count()
+        temp = data['critical_temp']
+        atomicMass = data['mean_atomic_mass']
+        condutividade = data['mean_ThermalConductivity']
+        eletric = data['mean_ElectronAffinity']
+        raio = data['mean_atomic_radius']
 
-        style.use("ggplot")
-        pyplot.scatter(data[p], data["mean_atomic_mass"])
-        pyplot.xlabel("Critical temperature")
-        pyplot.ylabel("Atomic mass")
+        pyplot.plot(temp.sort_values(), atomicMass.sort_values(), color='green', label='Massa atômica')
+        pyplot.plot(temp.sort_values(), condutividade.sort_values(), color='orange', label= 'condutividade')
+        pyplot.plot(temp.sort_values(), eletric.sort_values(), color='blue', label= 'afinidade eletrônica')
+        pyplot.plot(temp.sort_values(), raio.sort_values(), color='black', label= 'Raio atômico')
+        pyplot.plot(temp.sort_values(), temp.sort_values(), color='red', label= 'Temperatura')
+
+        pyplot.xlabel('Temperatura')
+        #plt.ylabel('Massa atômica')
+        pyplot.title('Relação temperatura critica')
+        pyplot.legend(loc="upper left")
         pyplot.savefig("static/img/knnimg.png")
-
-        return render_template("knn.html", name = f.filename)  
+        
+        return render_template("knn.html", name = f.filename, score= score, count= count)  
 
 if __name__ =='__main__':
     app.run(debug=True)
