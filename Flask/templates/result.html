@@ -4,7 +4,7 @@
 
 <title>AIDataLab</title>
 
-<link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/result.css') }}"> 
 
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
@@ -27,7 +27,7 @@
 </style>
 
 </head>
-{% block body %}
+
 <body class="body">
     <div class="w3-container">
         <div class="menu">
@@ -41,27 +41,21 @@
             </div>
         </div>
 
-        <div class="mid-title">
-            <b class="unboxing">Unboxing your data</b>
-        </div>
+        
     </div>
     
     <div class="mid-page"> 
+        
         <div class="mid-text">
-            <b><p class=about>About</p></b>
-            <p>
-                Projeto de inovação tecnológica criado pelo AiBoxLab em 
-                conjunto com a universidade federal rural de Pernambuco (UFRPE), 
-                com o intuito de criar uma ferramenta capaz de fazer a analise de dados de logs de 
-                equipamentos médicos.
-            </p>
+            
+                <h1>Resultados!</h1>
+                <h1>File Name: {{namel}}</h1>
+                <h1>Quantidade de elementos: {{countl}}</h1>
+                <h1>Score: {{scorel}}</h1>
+                <img src="{{url_for('static', filename='img/linearimg.png')}}" />
         </div>
-        <div class="buttons">
-        <button class="button jump">Tutorial</button>
-        <a href="{{ url_for('start')}}" class="button jump">Começar</a>
-        </div>
-
     </div>
+
     <div class="colaboradores">
         
         <p class="titleColaboradores">Colaboradores</p>
@@ -99,7 +93,7 @@
             <a href="#about">Outro Projetos</a>
         </div>
     </div>
-    {% endblock %}
+    
 </body>
 
 </html>

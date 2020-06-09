@@ -4,7 +4,7 @@
 
 <title>AIDataLab</title>
 
-<link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/start.css') }}">
 
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
@@ -27,7 +27,7 @@
 </style>
 
 </head>
-{% block body %}
+
 <body class="body">
     <div class="w3-container">
         <div class="menu">
@@ -41,27 +41,41 @@
             </div>
         </div>
 
-        <div class="mid-title">
-            <b class="unboxing">Unboxing your data</b>
-        </div>
+        
     </div>
     
     <div class="mid-page"> 
+        
         <div class="mid-text">
-            <b><p class=about>About</p></b>
-            <p>
-                Projeto de inovação tecnológica criado pelo AiBoxLab em 
-                conjunto com a universidade federal rural de Pernambuco (UFRPE), 
-                com o intuito de criar uma ferramenta capaz de fazer a analise de dados de logs de 
-                equipamentos médicos.
-            </p>
-        </div>
-        <div class="buttons">
-        <button class="button jump">Tutorial</button>
-        <a href="{{ url_for('start')}}" class="button jump">Começar</a>
-        </div>
+            <b><p class=about>Upload de arquivo</p></b>
+            <p>Sobre o tipo de arquivo a ser enviado: </p>
+            <p>o arquivo deve ser do tipo "csv" e deve conter as seguintes colunas:</p>
+        
+        <div class="list"> 
+           
+                <p>1.'critical_temp' indicando a temperatura critica do elemento quimico</p>
+                <p>2.'mean_atomic_mass' indicando a média da massa atômica</p>
+                <p>3.'mean_ThermalConductivity' condutividade termica</p>
+                <p>4.'mean_ElectronAffinity' afinidade elétrica</p>
+                <p>5.'mean_Valence' camada de valência</p>
+                <p>6.'mean_atomic_radius' o raio atômico</p>
+             
+        </div> 
+            <p>Observações: entenda que essa é apenas uma versão de testes não representa a versão final, portanto irá sofrer várias alterações</p>
+            </div>
+        <form class="form" method="post" enctype="multipart/form-data" action="/linear">
+            <input type="file" name="file"/>
+            
+            <div class="buttons">
+                <button class="button jump" type="submit" ind="login-button" value="Iniciar">Iniciar</button>
+            </div>    
+        </form>
 
+       
+        
+       
     </div>
+
     <div class="colaboradores">
         
         <p class="titleColaboradores">Colaboradores</p>
@@ -99,7 +113,7 @@
             <a href="#about">Outro Projetos</a>
         </div>
     </div>
-    {% endblock %}
+    
 </body>
 
 </html>

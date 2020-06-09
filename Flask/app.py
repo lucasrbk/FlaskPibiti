@@ -21,7 +21,11 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route("/")
 def index():
-    return render_template('base.html')
+    return render_template('index.html')
+
+@app.route("/start")
+def start():
+    return render_template('start.html')
 
 @app.route('/linear', methods = ['GET','POST'])  
 def linear():  
@@ -60,11 +64,11 @@ def linear():
     valence = data['mean_Valence']
     raio = data['mean_atomic_radius']
 
-    pyplot.plot(temp.sort_values(), atomicMass.sort_values(), color='green', label='Massa atômica')
+    pyplot.scatter(temp.sort_values(), atomicMass.sort_values(), color='green', label='Massa atômica')
     pyplot.plot(temp.sort_values(), condutividade.sort_values(), color='orange', label= 'condutividade')
     pyplot.plot(temp.sort_values(), eletric.sort_values(), color='blue', label= 'afinidade eletrônica')
     pyplot.plot(temp.sort_values(), raio.sort_values(), color='black', label= 'Raio atômico')
-    pyplot.plot(temp.sort_values(), temp.sort_values(), color='red', label= 'Temperatura')
+    pyplot.scatter(temp.sort_values(), temp.sort_values(), color='red', label= 'Temperatura')
 
     pyplot.xlabel('Temperatura')
     #plt.ylabel('Massa atômica')
@@ -72,7 +76,8 @@ def linear():
     pyplot.legend(loc="upper left")
     pyplot.savefig("static/img/linearimg.png")
 
-    return render_template("linear.html", name = f.filename, score= score, count=count)  
+
+    return render_template("result.html", namel = f.filename, scorel= score, countl=count)  
 
 @app.route('/knn', methods = ['GET','POST'])  
 def knn():  
@@ -121,7 +126,7 @@ def knn():
         pyplot.legend(loc="upper left")
         pyplot.savefig("static/img/knnimg.png")
         
-        return render_template("knn.html", name = f.filename, score= score, count= count)  
+        return render_template("result.html", namek = f.filename, scorek= score, countk= count)  
 
 if __name__ =='__main__':
     app.run(debug=True)
